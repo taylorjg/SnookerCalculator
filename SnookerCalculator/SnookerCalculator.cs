@@ -8,37 +8,51 @@ namespace SnookerCalculatorLib
     {
         public static AnalysisResult Analyse(int player1Score, int player2Score, int numRedsRemaining, int lowestColourAvailable = 2)
         {
-            var losingScore = Math.Min(player1Score, player2Score);
-            var winningScore = Math.Max(player1Score, player2Score);
+            var initialLosingScore = Math.Min(player1Score, player2Score);
+            var initialWinningScore = Math.Max(player1Score, player2Score);
 
-            var remainingBalls = CalculateRemainingBalls(numRedsRemaining, lowestColourAvailable).ToList();
-            var scoredBalls = new List<int>();
+            var remainingBallsImmutable = RemainingBalls(numRedsRemaining, lowestColourAvailable).ToList();
+            var remainingBallsMutable = new List<int>(remainingBallsImmutable);
+            var remainingBallsPotted = new List<int>();
+            Tuple<int, int, int> scoreAheadRemaining = null;
 
-            foreach (var ball in remainingBalls.TakeWhile(ball => !LosingPlayerRequiresSnookers(losingScore, winningScore, remainingBalls, scoredBalls)))
+            foreach (var remainingBall in remainingBallsImmutable)
             {
-                scoredBalls.Add(ball);
+                scoreAheadRemaining = LosingPlayerCanStillWinOrDraw(
+                    initialLosingScore,
+                    initialWinningScore,
+                    remainingBallsMutable,
+                    remainingBallsPotted);
+
+                if (scoreAheadRemaining != null)
+                {
+                    break;
+                }
+
+                remainingBallsMutable.RemoveAt(0);
+                remainingBallsPotted.Add(remainingBall);
             }
 
-            if (player1Score == player2Score) return AnalysisResult.Draw(scoredBalls);
+            if (player1Score == player2Score) return AnalysisResult.Draw(remainingBallsPotted, scoreAheadRemaining);
 
             return player1Score > player2Score
-                       ? AnalysisResult.Player1Winning(scoredBalls)
-                       : AnalysisResult.Player2Winning(scoredBalls);
+                       ? AnalysisResult.Player1Winning(remainingBallsPotted, scoreAheadRemaining)
+                       : AnalysisResult.Player2Winning(remainingBallsPotted, scoreAheadRemaining);
         }
 
-        private static bool LosingPlayerRequiresSnookers(int losingScore, int winningScore, IEnumerable<int> remainingBalls, IEnumerable<int> scoredBalls)
+        private static Tuple<int, int, int> LosingPlayerCanStillWinOrDraw(int initialLosingScore, int initialWinningScore, IEnumerable<int> remainingBalls, IEnumerable<int> ballsPotted)
         {
             var remainingBallsSum = remainingBalls.Sum();
-            var scoredBallsSum = scoredBalls.Sum();
-            return losingScore + remainingBallsSum - scoredBallsSum < winningScore + scoredBallsSum;
+            var ballsPottedSum = ballsPotted.Sum();
+            var bestPossibleLosingScore = initialLosingScore + remainingBallsSum;
+            var winningScore = initialWinningScore + ballsPottedSum;
+
+            return bestPossibleLosingScore >= winningScore
+                       ? null
+                       : Tuple.Create(winningScore, winningScore - initialLosingScore, remainingBallsSum);
         }
 
-        // private static int CalculateRemainingTotal(int numRedsRemaining, int lowestColourAvailable)
-        // {
-        //     return (8 * numRedsRemaining) + RemainingColours(lowestColourAvailable).Sum();
-        // }
-
-        private static IEnumerable<int> CalculateRemainingBalls(int numRedsRemaining, int lowestColourAvailable)
+        private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestColourAvailable)
         {
             var result = new List<int>();
             for (var i = 0; i < numRedsRemaining; i++) result.AddRange(new[] {1, 7});

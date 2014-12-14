@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using SnookerCalculatorLib;
 
 namespace SnookerCalculatorLibTests
@@ -15,6 +16,7 @@ namespace SnookerCalculatorLibTests
             var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining);
             Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Player1Winning));
             Assert.That(actual.HowToAchieveFrameBall, Is.EqualTo(new[] {1, 7, 1, 7, 1, 7, 1, 7}));
+            Assert.That(actual.ScoreAheadRemaining, Is.EqualTo(Tuple.Create(80, 64, 51)));
         }
 
         [Test]
@@ -26,6 +28,7 @@ namespace SnookerCalculatorLibTests
             var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining);
             Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Player2Winning));
             Assert.That(actual.HowToAchieveFrameBall, Is.EqualTo(new[] { 1, 7, 1, 7, 1, 7, 1, 7 }));
+            Assert.That(actual.ScoreAheadRemaining, Is.EqualTo(Tuple.Create(80, 64, 51)));
         }
 
         [Test]
@@ -37,6 +40,7 @@ namespace SnookerCalculatorLibTests
             var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining);
             Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Draw));
             Assert.That(actual.HowToAchieveFrameBall, Is.EqualTo(new[] {1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7}));
+            Assert.That(actual.ScoreAheadRemaining, Is.EqualTo(Tuple.Create(80, 48, 35)));
         }
     }
 }
