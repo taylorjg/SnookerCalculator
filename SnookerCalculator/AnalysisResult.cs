@@ -1,46 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace SnookerCalculatorLib
+﻿namespace SnookerCalculatorLib
 {
     public class AnalysisResult
     {
         private AnalysisResult(
             AnalysisResultType analysisResultType,
-            IEnumerable<int> howToAchieveFrameBall,
-            Tuple<int, int, int> scoreAheadRemaining,
-            Tuple<Ball, int> snookersRequired)
+            FrameBallDetails frameBallDetails,
+            SnookersRequiredDetails snookersRequiredDetails)
         {
             _analysisResultType = analysisResultType;
-            _howToAchieveFrameBall = howToAchieveFrameBall ?? Enumerable.Empty<int>();
-            _scoreAheadRemaining = scoreAheadRemaining;
-            _snookersRequired = snookersRequired;
+            _frameBallDetails = frameBallDetails;
+            _snookersRequiredDetails = snookersRequiredDetails;
         }
 
-        public static AnalysisResult Player1Winning(IEnumerable<int> howToAchieveFrameBall, Tuple<int, int, int> scoreAheadRemaining)
+        public static AnalysisResult Player1Winning(FrameBallDetails frameBallDetails)
         {
-            return new AnalysisResult(AnalysisResultType.Player1Winning, howToAchieveFrameBall, scoreAheadRemaining, null);
+            return new AnalysisResult(AnalysisResultType.Player1Winning, frameBallDetails, null);
         }
 
-        public static AnalysisResult Player2Winning(IEnumerable<int> howToAchieveFrameBall, Tuple<int, int, int> scoreAheadRemaining)
+        public static AnalysisResult Player2Winning(FrameBallDetails frameBallDetails)
         {
-            return new AnalysisResult(AnalysisResultType.Player2Winning, howToAchieveFrameBall, scoreAheadRemaining, null);
+            return new AnalysisResult(AnalysisResultType.Player2Winning, frameBallDetails, null);
         }
 
-        public static AnalysisResult Draw(IEnumerable<int> howToAchieveFrameBall, Tuple<int, int, int> scoreAheadRemaining)
+        public static AnalysisResult Draw(FrameBallDetails frameBallDetails)
         {
-            return new AnalysisResult(AnalysisResultType.Draw, howToAchieveFrameBall, scoreAheadRemaining, null);
+            return new AnalysisResult(AnalysisResultType.Draw, frameBallDetails, null);
         }
 
-        public static AnalysisResult Player1NeedsSnookers(Tuple<Ball, int> snookersRequired)
+        public static AnalysisResult Player1NeedsSnookers(SnookersRequiredDetails snookersRequiredDetails)
         {
-            return new AnalysisResult(AnalysisResultType.Player1NeedsSnookers, null, null, snookersRequired);
+            return new AnalysisResult(AnalysisResultType.Player1NeedsSnookers, null, snookersRequiredDetails);
         }
 
-        public static AnalysisResult Player2NeedsSnookers(Tuple<Ball, int> snookersRequired)
+        public static AnalysisResult Player2NeedsSnookers(SnookersRequiredDetails snookersRequiredDetails)
         {
-            return new AnalysisResult(AnalysisResultType.Player2NeedsSnookers, null, null, snookersRequired);
+            return new AnalysisResult(AnalysisResultType.Player2NeedsSnookers, null, snookersRequiredDetails);
         }
 
         public AnalysisResultType AnalysisResultType
@@ -48,24 +42,18 @@ namespace SnookerCalculatorLib
             get { return _analysisResultType; }
         }
 
-        public IEnumerable<int> HowToAchieveFrameBall
+        public FrameBallDetails FrameBallDetails
         {
-            get { return _howToAchieveFrameBall; }
+            get { return _frameBallDetails; }
         }
 
-        public Tuple<int, int, int> ScoreAheadRemaining
+        public SnookersRequiredDetails SnookersRequiredDetails
         {
-            get { return _scoreAheadRemaining; }
-        }
-
-        public Tuple<Ball, int> SnookersRequired
-        {
-            get { return _snookersRequired; }
+            get { return _snookersRequiredDetails; }
         }
 
         private readonly AnalysisResultType _analysisResultType;
-        private readonly IEnumerable<int> _howToAchieveFrameBall;
-        private readonly Tuple<int, int, int> _scoreAheadRemaining; // 80, 64, 51
-        private readonly Tuple<Ball, int> _snookersRequired;
+        private readonly FrameBallDetails _frameBallDetails;
+        private readonly SnookersRequiredDetails _snookersRequiredDetails;
     }
 }

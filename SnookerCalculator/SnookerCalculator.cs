@@ -11,45 +11,46 @@ namespace SnookerCalculatorLib
             var initialLosingScore = Math.Min(player1Score, player2Score);
             var initialWinningScore = Math.Max(player1Score, player2Score);
 
-            var remainingBallsImmutable = RemainingBalls(numRedsRemaining, lowestColourAvailable).ToList();
-            var remainingBallsMutable = new List<int>(remainingBallsImmutable);
-            var remainingBallsPotted = new List<int>();
-            Tuple<int, int, int> scoreAheadRemaining = null;
+            var initialRemainingBalls = RemainingBalls(numRedsRemaining, lowestColourAvailable).ToList();
+            var currentRemainingBalls = new List<int>(initialRemainingBalls);
+            var frameBalls = new List<int>();
+            FrameBallDetails frameBallDetails = null;
 
-            foreach (var remainingBall in remainingBallsImmutable)
+            foreach (var remainingBall in initialRemainingBalls)
             {
-                scoreAheadRemaining = LosingPlayerCanStillWinOrDraw(
+                frameBallDetails = CalculateFrameBallDetails(
                     initialLosingScore,
                     initialWinningScore,
-                    remainingBallsMutable,
-                    remainingBallsPotted);
+                    currentRemainingBalls,
+                    frameBalls);
 
-                if (scoreAheadRemaining != null)
+                if (frameBallDetails != null)
                 {
                     break;
                 }
 
-                remainingBallsMutable.RemoveAt(0);
-                remainingBallsPotted.Add(remainingBall);
+                currentRemainingBalls.RemoveAt(0);
+                frameBalls.Add(remainingBall);
             }
 
-            if (player1Score == player2Score) return AnalysisResult.Draw(remainingBallsPotted, scoreAheadRemaining);
+            if (player1Score == player2Score) return AnalysisResult.Draw(frameBallDetails);
 
             return player1Score > player2Score
-                       ? AnalysisResult.Player1Winning(remainingBallsPotted, scoreAheadRemaining)
-                       : AnalysisResult.Player2Winning(remainingBallsPotted, scoreAheadRemaining);
+                       ? AnalysisResult.Player1Winning(frameBallDetails)
+                       : AnalysisResult.Player2Winning(frameBallDetails);
         }
 
-        private static Tuple<int, int, int> LosingPlayerCanStillWinOrDraw(int initialLosingScore, int initialWinningScore, IEnumerable<int> remainingBalls, IEnumerable<int> ballsPotted)
+        private static FrameBallDetails CalculateFrameBallDetails(int initialLosingScore, int initialWinningScore, IEnumerable<int> remainingBalls, IList<int> frameBalls)
         {
             var remainingBallsSum = remainingBalls.Sum();
-            var ballsPottedSum = ballsPotted.Sum();
+            var frameBallsSum = frameBalls.Sum();
             var bestPossibleLosingScore = initialLosingScore + remainingBallsSum;
-            var winningScore = initialWinningScore + ballsPottedSum;
+            var projectedWinningScore = initialWinningScore + frameBallsSum;
+            var pointsAhead = projectedWinningScore - initialLosingScore;
 
-            return bestPossibleLosingScore >= winningScore
-                       ? null
-                       : Tuple.Create(winningScore, winningScore - initialLosingScore, remainingBallsSum);
+            return bestPossibleLosingScore < projectedWinningScore
+                       ? new FrameBallDetails(frameBalls, projectedWinningScore, pointsAhead, remainingBallsSum)
+                       : null;
         }
 
         private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestColourAvailable)

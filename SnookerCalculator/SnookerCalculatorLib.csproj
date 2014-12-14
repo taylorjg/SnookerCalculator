@@ -42,8 +42,10 @@
     <Compile Include="AnalysisResult.cs" />
     <Compile Include="AnalysisResultType.cs" />
     <Compile Include="Ball.cs" />
+    <Compile Include="FrameBallDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnookerCalculator.cs" />
+    <Compile Include="SnookersRequiredDetails.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
