@@ -44,7 +44,7 @@ namespace SnookerCalculatorApp
         private static void PrintFrameBallDetails(string message, FrameBallDetails frameBallDetails)
         {
             Console.WriteLine(message);
-            Console.WriteLine("Pot the following balls: {0}", string.Join(", ", frameBallDetails.FrameBalls.Select(x => Convert.ToString(x))));
+            Console.WriteLine("Pot the following balls: {0}", string.Join(", ", frameBallDetails.FrameBalls.Select(IntToBallName)));
             Console.WriteLine("The winner's score will then be: {0}", frameBallDetails.Score);
             Console.WriteLine("The winner will then be ahead by: {0}", frameBallDetails.PointsAhead);
             Console.WriteLine("The number of points available will be: {0}", frameBallDetails.PointsRemaining);
@@ -63,6 +63,11 @@ namespace SnookerCalculatorApp
                 (snookersRequiredDetails.CanOnlyDraw) ? "to draw" : "to win",
                 snookersRequiredDetails.NumberOfSnookersNeeded,
                 snookersRequiredDetails.ValueOfSnookersNeeded);
+        }
+
+        private static string IntToBallName(int ball)
+        {
+            return Enum.GetName(typeof(Ball), ball);
         }
     }
 }
