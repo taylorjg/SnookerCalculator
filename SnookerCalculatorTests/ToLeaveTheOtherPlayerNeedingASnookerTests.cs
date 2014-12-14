@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SnookerCalculatorLib;
 
 namespace SnookerCalculatorLibTests
@@ -47,6 +46,21 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(80));
             Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(48));
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(35));
+        }
+
+        [Test]
+        public void Player1OnlyNeedsBlueAndPink()
+        {
+            const int player1Score = 50;
+            const int player2Score = 45;
+            const int numRedsRemaining = 0;
+            const int lowestAvailableColour = 5;
+            var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining, lowestAvailableColour);
+            Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Player1Winning));
+            Assert.That(actual.FrameBallDetails.FrameBalls, Is.EqualTo(new[] {5, 6}));
+            Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(61));
+            Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(16));
+            Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(7));
         }
     }
 }

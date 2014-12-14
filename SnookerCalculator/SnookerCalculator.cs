@@ -6,12 +6,12 @@ namespace SnookerCalculatorLib
 {
     public class SnookerCalculator
     {
-        public static AnalysisResult Analyse(int player1Score, int player2Score, int numRedsRemaining, int lowestColourAvailable = 2)
+        public static AnalysisResult Analyse(int player1Score, int player2Score, int numRedsRemaining, int lowestAvailableColour = 2)
         {
             var initialLosingScore = Math.Min(player1Score, player2Score);
             var initialWinningScore = Math.Max(player1Score, player2Score);
 
-            var initialRemainingBalls = RemainingBalls(numRedsRemaining, lowestColourAvailable).ToList();
+            var initialRemainingBalls = RemainingBalls(numRedsRemaining, lowestAvailableColour).ToList();
             var currentRemainingBalls = new List<int>(initialRemainingBalls);
             var frameBalls = new List<int>();
             FrameBallDetails frameBallDetails = null;
@@ -53,16 +53,16 @@ namespace SnookerCalculatorLib
                        : null;
         }
 
-        private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestColourAvailable)
+        private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestAvailableColour)
         {
             var result = new List<int>();
             for (var i = 0; i < numRedsRemaining; i++) result.AddRange(new[] {1, 7});
-            return result.Concat(RemainingColours(lowestColourAvailable));
+            return result.Concat(RemainingColours(lowestAvailableColour));
         }
 
-        private static IEnumerable<int> RemainingColours(int lowestColourAvailable)
+        private static IEnumerable<int> RemainingColours(int lowestAvailableColour)
         {
-            return new[] { 2, 3, 4, 5, 6, 7 }.Where(b => b >= lowestColourAvailable);
+            return new[] { 2, 3, 4, 5, 6, 7 }.Where(b => b >= lowestAvailableColour);
         }
     }
 }
