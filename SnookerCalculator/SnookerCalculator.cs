@@ -22,7 +22,8 @@ namespace SnookerCalculatorLib
                     initialLosingScore,
                     initialWinningScore,
                     currentRemainingBalls,
-                    frameBalls);
+                    frameBalls,
+                    lowestAvailableColour);
 
                 if (frameBallDetails != null)
                 {
@@ -40,17 +41,37 @@ namespace SnookerCalculatorLib
                        : AnalysisResult.Player2Winning(frameBallDetails);
         }
 
-        private static FrameBallDetails CalculateFrameBallDetails(int initialLosingScore, int initialWinningScore, IEnumerable<int> remainingBalls, IList<int> frameBalls)
+        private static FrameBallDetails CalculateFrameBallDetails(
+            int initialLosingScore,
+            int initialWinningScore,
+            IEnumerable<int> remainingBalls,
+            IList<int> frameBalls,
+            int lowestAvailableColour)
         {
             var remainingBallsSum = remainingBalls.Sum();
             var frameBallsSum = frameBalls.Sum();
             var bestPossibleLosingScore = initialLosingScore + remainingBallsSum;
-            var projectedWinningScore = initialWinningScore + frameBallsSum;
-            var pointsAhead = projectedWinningScore - initialLosingScore;
+            var latestWinningScore = initialWinningScore + frameBallsSum;
+            var pointsAhead = latestWinningScore - initialLosingScore;
 
-            return bestPossibleLosingScore < projectedWinningScore
-                       ? new FrameBallDetails(frameBalls, projectedWinningScore, pointsAhead, remainingBallsSum)
-                       : null;
+            if (bestPossibleLosingScore >= latestWinningScore)
+            {
+                return null;
+            }
+
+            var pointsDifference = latestWinningScore - bestPossibleLosingScore;
+            var valueOfSnookersNeeded = Math.Max(4, lowestAvailableColour);
+            var numberOfSnookersNeeded = (pointsDifference - 1) / valueOfSnookersNeeded + 1;
+            var canOnlyDraw = (numberOfSnookersNeeded * valueOfSnookersNeeded == pointsDifference);
+
+            var snookersRequiredDetails = new SnookersRequiredDetails(numberOfSnookersNeeded, valueOfSnookersNeeded, canOnlyDraw);
+
+            return new FrameBallDetails(
+                frameBalls,
+                latestWinningScore,
+                pointsAhead,
+                remainingBallsSum,
+                snookersRequiredDetails);
         }
 
         private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestAvailableColour)

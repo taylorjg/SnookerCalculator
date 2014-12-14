@@ -4,7 +4,7 @@ using SnookerCalculatorLib;
 namespace SnookerCalculatorLibTests
 {
     [TestFixture]
-    class ToLeaveTheOtherPlayerNeedingASnookerTests
+    class SnookerCalculatorTests
     {
         [Test]
         public void Player1WinningAndNeeds4RedsAnd4BlacksToLeaveSnookers()
@@ -61,6 +61,20 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(61));
             Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(16));
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(7));
+        }
+
+        [Test]
+        public void Player1AchievedFrameBallAgesAgo()
+        {
+            const int player1Score = (1 + 7) * 15;
+            const int player2Score = 0;
+            const int numRedsRemaining = 0;
+            var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining);
+            Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Player1Winning));
+            Assert.That(actual.FrameBallDetails.FrameBalls, Is.Empty);
+            Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(120));
+            Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(120));
+            Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(27));
         }
     }
 }

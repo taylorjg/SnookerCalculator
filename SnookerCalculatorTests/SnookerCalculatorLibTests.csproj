@@ -46,8 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SnookersRequiredTests.cs" />
-    <Compile Include="ToLeaveTheOtherPlayerNeedingASnookerTests.cs" />
+    <Compile Include="SnookerCalculatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
