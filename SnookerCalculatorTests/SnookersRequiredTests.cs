@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SnookerCalculatorTests
+namespace SnookerCalculatorLibTests
 {
     [TestFixture]
     class SnookersRequiredTests

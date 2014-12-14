@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SnookerCalculator
+namespace SnookerCalculatorLib
 {
     public class SnookerCalculator
     {
-        public static IEnumerable<int> Calculate(int player1Score, int player2Score, int numRedsRemaining, int lowestColourAvailable = 2)
+        public static AnalysisResult Analyse(int player1Score, int player2Score, int numRedsRemaining, int lowestColourAvailable = 2)
         {
             var losingScore = Math.Min(player1Score, player2Score);
             var winningScore = Math.Max(player1Score, player2Score);
@@ -14,13 +14,16 @@ namespace SnookerCalculator
             var remainingBalls = CalculateRemainingBalls(numRedsRemaining, lowestColourAvailable).ToList();
             var scoredBalls = new List<int>();
 
-            foreach (var ball in remainingBalls)
+            foreach (var ball in remainingBalls.TakeWhile(ball => !LosingPlayerRequiresSnookers(losingScore, winningScore, remainingBalls, scoredBalls)))
             {
-                if (LosingPlayerRequiresSnookers(losingScore, winningScore, remainingBalls, scoredBalls)) break;
                 scoredBalls.Add(ball);
             }
 
-            return scoredBalls;
+            if (player1Score == player2Score) return AnalysisResult.Draw(scoredBalls);
+
+            return player1Score > player2Score
+                       ? AnalysisResult.Player1Winning(scoredBalls)
+                       : AnalysisResult.Player2Winning(scoredBalls);
         }
 
         private static bool LosingPlayerRequiresSnookers(int losingScore, int winningScore, IEnumerable<int> remainingBalls, IEnumerable<int> scoredBalls)

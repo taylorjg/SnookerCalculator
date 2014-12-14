@@ -8,9 +8,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{84AC20
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnookerCalculator", "SnookerCalculator\SnookerCalculator.csproj", "{49CCD6E0-423C-4CCE-ABE3-087482254471}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnookerCalculatorLib", "SnookerCalculator\SnookerCalculatorLib.csproj", "{49CCD6E0-423C-4CCE-ABE3-087482254471}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnookerCalculatorTests", "SnookerCalculatorTests\SnookerCalculatorTests.csproj", "{F2F8B82B-EFE9-4E61-9A2D-91AA243B79B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnookerCalculatorLibTests", "SnookerCalculatorTests\SnookerCalculatorLibTests.csproj", "{F2F8B82B-EFE9-4E61-9A2D-91AA243B79B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnookerCalculatorApp", "SnookerCalculatorApp\SnookerCalculatorApp.csproj", "{F8BFF32A-8C4B-423A-9D55-4D2E05AD5FF0}"
 EndProject
