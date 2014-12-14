@@ -27,5 +27,16 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Player2Winning));
             Assert.That(actual.HowToAchieveFrameBall, Is.EqualTo(new[] { 1, 7, 1, 7, 1, 7, 1, 7 }));
         }
+
+        [Test]
+        public void DrawNeeds6RedsAnd6BlacksToLeaveSnookers()
+        {
+            const int player1Score = (1 + 7) * 4;
+            const int player2Score = (1 + 7) * 4;
+            const int numRedsRemaining = 15 - 4 - 4;
+            var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining);
+            Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Draw));
+            Assert.That(actual.HowToAchieveFrameBall, Is.EqualTo(new[] {1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7}));
+        }
     }
 }

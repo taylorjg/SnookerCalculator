@@ -33,10 +33,10 @@ namespace SnookerCalculatorLib
             return losingScore + remainingBallsSum - scoredBallsSum < winningScore + scoredBallsSum;
         }
 
-        private static int CalculateRemainingTotal(int numRedsRemaining, int lowestColourAvailable)
-        {
-            return (8 * numRedsRemaining) + RemainingColours(lowestColourAvailable).Sum();
-        }
+        // private static int CalculateRemainingTotal(int numRedsRemaining, int lowestColourAvailable)
+        // {
+        //     return (8 * numRedsRemaining) + RemainingColours(lowestColourAvailable).Sum();
+        // }
 
         private static IEnumerable<int> CalculateRemainingBalls(int numRedsRemaining, int lowestColourAvailable)
         {
