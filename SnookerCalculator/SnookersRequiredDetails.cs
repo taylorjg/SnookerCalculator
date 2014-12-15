@@ -2,11 +2,11 @@
 {
     public class SnookersRequiredDetails
     {
-        public SnookersRequiredDetails(int numberOfSnookersNeeded, int valueOfSnookersNeeded, bool canOnlyDraw)
+        public SnookersRequiredDetails(int numberOfSnookersNeeded, int valueOfSnookersNeeded, int toWinBy)
         {
             _numberOfSnookersNeeded = numberOfSnookersNeeded;
             _valueOfSnookersNeeded = valueOfSnookersNeeded;
-            _canOnlyDraw = canOnlyDraw;
+            _toWinBy = toWinBy;
         }
 
         public int NumberOfSnookersNeeded
@@ -19,13 +19,13 @@
             get { return _valueOfSnookersNeeded; }
         }
 
-        public bool CanOnlyDraw
+        public int ToWinBy
         {
-            get { return _canOnlyDraw; }
+            get { return _toWinBy; }
         }
 
         private readonly int _numberOfSnookersNeeded;
         private readonly int _valueOfSnookersNeeded;
-        private readonly bool _canOnlyDraw;
+        private readonly int _toWinBy;
     }
 }

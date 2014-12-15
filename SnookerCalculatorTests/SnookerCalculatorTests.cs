@@ -20,7 +20,7 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(51));
             Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(4));
             Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
-            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.CanOnlyDraw, Is.False);
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ToWinBy, Is.EqualTo(3));
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(51));
             Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(4));
             Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
-            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.CanOnlyDraw, Is.False);
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ToWinBy, Is.EqualTo(3));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(35));
             Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(4));
             Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
-            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.CanOnlyDraw, Is.False);
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ToWinBy, Is.EqualTo(3));
         }
 
         [Test]
@@ -85,5 +85,10 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(2));
             Assert.That(actual.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(5));
         }
+
+        // Add further tests:
+        // - a test where can only draw with snookers
+        // - a test where can't win because only the black ball is left and can't have snookers with just one ball
+        // - etc
     }
 }

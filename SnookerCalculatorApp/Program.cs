@@ -60,7 +60,7 @@ namespace SnookerCalculatorApp
             Console.WriteLine(message);
             Console.WriteLine(
                 "Snookers required ({0}): {1} x {2} point snookers",
-                (snookersRequiredDetails.CanOnlyDraw) ? "to draw" : "to win",
+                (snookersRequiredDetails.ToWinBy > 0) ? string.Format("to win by {0}", snookersRequiredDetails.ToWinBy) : "to draw",
                 snookersRequiredDetails.NumberOfSnookersNeeded,
                 snookersRequiredDetails.ValueOfSnookersNeeded);
         }

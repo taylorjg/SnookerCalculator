@@ -118,12 +118,12 @@ namespace SnookerCalculatorLib
             var pointsDifference = pointsAhead - pointsRemaining;
             var valueOfSnookersNeeded = Math.Max(Balls.Brown, lowestAvailableColour);
             var numberOfSnookersNeeded = ((pointsDifference - 1) / valueOfSnookersNeeded) + 1;
-            var canOnlyDraw = (numberOfSnookersNeeded * valueOfSnookersNeeded == pointsDifference);
+            var toWinBy = numberOfSnookersNeeded * valueOfSnookersNeeded - pointsDifference;
 
             var snookersRequiredDetails = new SnookersRequiredDetails(
                 numberOfSnookersNeeded,
                 valueOfSnookersNeeded,
-                canOnlyDraw);
+                toWinBy);
 
             return snookersRequiredDetails;
         }
