@@ -52,7 +52,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SnookerCalculator\SnookerCalculatorLib.csproj">
+    <ProjectReference Include="..\SnookerCalculatorLib\SnookerCalculatorLib.csproj">
       <Project>{49CCD6E0-423C-4CCE-ABE3-087482254471}</Project>
       <Name>SnookerCalculatorLib</Name>
     </ProjectReference>
