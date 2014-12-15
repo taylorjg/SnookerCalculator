@@ -13,6 +13,23 @@ namespace SnookerCalculatorLib
 
             var initialRemainingBalls = RemainingBalls(numRedsRemaining, lowestAvailableColour).ToList();
             var currentRemainingBalls = new List<int>(initialRemainingBalls);
+
+            var pointsAhead = initialWinningScore - initialLosingScore;
+            var pointsRemaining = initialRemainingBalls.Sum();
+
+            if (pointsAhead > pointsRemaining)
+            {
+                var snookersRequiredDetails = CalculateSnookersRequired(
+                    pointsAhead,
+                    pointsRemaining,
+                    lowestAvailableColour,
+                    initialRemainingBalls.Count);
+
+                return (player1Score > player2Score)
+                    ? AnalysisResult.Player2NeedsSnookers(snookersRequiredDetails)
+                    : AnalysisResult.Player1NeedsSnookers(snookersRequiredDetails);
+            }
+
             var frameBalls = new List<int>();
             FrameBallDetails frameBallDetails = null;
 
@@ -71,12 +88,34 @@ namespace SnookerCalculatorLib
             int lowestAvailableColour,
             int numRemainingBalls)
         {
+            var snookersRequiredDetails = CalculateSnookersRequired(
+                frameBallDetails.PointsAhead,
+                frameBallDetails.PointsRemaining,
+                lowestAvailableColour,
+                numRemainingBalls);
+
+            return (snookersRequiredDetails != null)
+                       ? new FrameBallDetails(
+                             frameBallDetails.FrameBalls,
+                             frameBallDetails.Score,
+                             frameBallDetails.PointsAhead,
+                             frameBallDetails.PointsRemaining,
+                             snookersRequiredDetails)
+                       : frameBallDetails;
+        }
+
+        private static SnookersRequiredDetails CalculateSnookersRequired(
+            int pointsAhead,
+            int pointsRemaining,
+            int lowestAvailableColour,
+            int numRemainingBalls)
+        {
             if (numRemainingBalls == 1)
             {
-                return frameBallDetails;
+                return null;
             }
 
-            var pointsDifference = frameBallDetails.PointsAhead - frameBallDetails.PointsRemaining;
+            var pointsDifference = pointsAhead - pointsRemaining;
             var valueOfSnookersNeeded = Math.Max(Ball.Brown.ToInt(), lowestAvailableColour);
             var numberOfSnookersNeeded = ((pointsDifference - 1) / valueOfSnookersNeeded) + 1;
             var canOnlyDraw = (numberOfSnookersNeeded * valueOfSnookersNeeded == pointsDifference);
@@ -86,12 +125,7 @@ namespace SnookerCalculatorLib
                 valueOfSnookersNeeded,
                 canOnlyDraw);
 
-            return new FrameBallDetails(
-                frameBallDetails.FrameBalls,
-                frameBallDetails.Score,
-                frameBallDetails.PointsAhead,
-                frameBallDetails.PointsRemaining,
-                snookersRequiredDetails);
+            return snookersRequiredDetails;
         }
 
         private static readonly int[] RedAndBlack = new[]

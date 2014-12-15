@@ -74,20 +74,16 @@ namespace SnookerCalculatorLibTests
         }
 
         [Test]
-        public void Player1AchievedFrameBallAgesAgo()
+        public void Player2NeedsSnookers()
         {
-            const int player1Score = (1 + 7) * 15;
-            const int player2Score = 0;
+            const int player1Score = 60;
+            const int player2Score = 35;
             const int numRedsRemaining = 0;
-            var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining);
-            Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Player1Winning));
-            Assert.That(actual.FrameBallDetails.FrameBalls, Is.Empty);
-            Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(120));
-            Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(120));
-            Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(27));
-            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(24));
-            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
-            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.CanOnlyDraw, Is.False);
+            const int lowestAvailableColour = 5;
+            var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining, lowestAvailableColour);
+            Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Player2NeedsSnookers));
+            Assert.That(actual.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(2));
+            Assert.That(actual.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(5));
         }
     }
 }
