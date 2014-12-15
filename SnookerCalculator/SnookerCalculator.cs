@@ -6,7 +6,7 @@ namespace SnookerCalculatorLib
 {
     public class SnookerCalculator
     {
-        public static AnalysisResult Analyse(int player1Score, int player2Score, int numRedsRemaining, int lowestAvailableColour = 2)
+        public static AnalysisResult Analyse(int player1Score, int player2Score, int numRedsRemaining, int lowestAvailableColour = Balls.Yellow)
         {
             var initialLosingScore = Math.Min(player1Score, player2Score);
             var initialWinningScore = Math.Max(player1Score, player2Score);
@@ -116,7 +116,7 @@ namespace SnookerCalculatorLib
             }
 
             var pointsDifference = pointsAhead - pointsRemaining;
-            var valueOfSnookersNeeded = Math.Max(Ball.Brown.ToInt(), lowestAvailableColour);
+            var valueOfSnookersNeeded = Math.Max(Balls.Brown, lowestAvailableColour);
             var numberOfSnookersNeeded = ((pointsDifference - 1) / valueOfSnookersNeeded) + 1;
             var canOnlyDraw = (numberOfSnookersNeeded * valueOfSnookersNeeded == pointsDifference);
 
@@ -130,18 +130,18 @@ namespace SnookerCalculatorLib
 
         private static readonly int[] RedAndBlack = new[]
             {
-                Ball.Red.ToInt(),
-                Ball.Black.ToInt()
+                Balls.Red,
+                Balls.Black
             };
 
         private static readonly int[] Colours = new[]
             {
-                Ball.Yellow.ToInt(),
-                Ball.Green.ToInt(),
-                Ball.Brown.ToInt(),
-                Ball.Blue.ToInt(),
-                Ball.Pink.ToInt(),
-                Ball.Black.ToInt()
+                Balls.Yellow,
+                Balls.Green,
+                Balls.Brown,
+                Balls.Blue,
+                Balls.Pink,
+                Balls.Black
             };
 
         private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestAvailableColour)

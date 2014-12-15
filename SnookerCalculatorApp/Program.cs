@@ -44,7 +44,7 @@ namespace SnookerCalculatorApp
         private static void PrintFrameBallDetails(string message, FrameBallDetails frameBallDetails)
         {
             Console.WriteLine(message);
-            Console.WriteLine("Pot the following balls: {0}", string.Join(", ", frameBallDetails.FrameBalls.Select(BallExtensions.ToBallName)));
+            Console.WriteLine("Pot the following balls: {0}", string.Join(", ", frameBallDetails.FrameBalls.Select(Balls.ToBallName)));
             Console.WriteLine("The winner's score will then be: {0}", frameBallDetails.Score);
             Console.WriteLine("The winner will then be ahead by: {0}", frameBallDetails.PointsAhead);
             Console.WriteLine("The number of points available will be: {0}", frameBallDetails.PointsRemaining);
