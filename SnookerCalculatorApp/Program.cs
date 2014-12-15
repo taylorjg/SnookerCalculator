@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SnookerCalculatorLib;
 
@@ -8,14 +9,16 @@ namespace SnookerCalculatorApp
     {
         private static void Main(string[] args)
         {
-            var player1Score = int.Parse(args[0]);
-            var player2Score = int.Parse(args[1]);
-            var numRedsRemaining = int.Parse(args[2]);
-            var lowestAvailableColour = args.Length == 4 ? int.Parse(args[3]) : null as int?;
+            var commandLineArgs = GetCommandLineArgs(args);
 
-            var result = lowestAvailableColour.HasValue
-                             ? SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining, lowestAvailableColour.Value)
-                             : SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining);
+            var result = commandLineArgs.LowestAvailableColour.HasValue
+                             ? SnookerCalculator.Analyse(commandLineArgs.Player1Score,
+                                                         commandLineArgs.Player2Score,
+                                                         commandLineArgs.NumRedsRemaining,
+                                                         commandLineArgs.LowestAvailableColour.Value)
+                             : SnookerCalculator.Analyse(commandLineArgs.Player1Score,
+                                                         commandLineArgs.Player2Score,
+                                                         commandLineArgs.NumRedsRemaining);
 
             switch (result.AnalysisResultType)
             {
@@ -39,6 +42,47 @@ namespace SnookerCalculatorApp
                     PrintSnookersRequiredDetails("Player2 needs snookers", result.SnookersRequiredDetails);
                     break;
             }
+        }
+
+        private static CommandLineArgs GetCommandLineArgs(IList<string> args)
+        {
+            var player1Score = IntFromArgsOrInput(args, 0, "Player 1's score: ");
+            var player2Score = IntFromArgsOrInput(args, 1, "Player 2's score: ");
+            var numRedsRemaining = IntFromArgsOrInput(args, 2, "Number of remaining reds: ");
+            var lowestAvailableColour = IntFromArgsOrInputWithDefaultValue(args, 3, "Lowest available colour [Yellow]: ", null);
+
+            return new CommandLineArgs(player1Score, player2Score, numRedsRemaining, lowestAvailableColour);
+        }
+
+        private static int IntFromArgsOrInput(IList<string> args, int index, string prompt)
+        {
+            if (index < args.Count)
+            {
+                return int.Parse(args[index]);
+            }
+
+            for (;;)
+            {
+                Console.Write(prompt);
+                var line = Console.ReadLine();
+                if (!string.IsNullOrEmpty(line))
+                {
+                    return int.Parse(line);
+                }
+            }
+        }
+
+        private static int? IntFromArgsOrInputWithDefaultValue(IList<string> args, int index, string prompt, int? defaultValue)
+        {
+            if (index < args.Count)
+            {
+                return int.Parse(args[index]);
+            }
+
+            Console.Write(prompt);
+            var line = Console.ReadLine();
+
+            return !string.IsNullOrEmpty(line) ? int.Parse(line) : defaultValue;
         }
 
         private static void PrintFrameBallDetails(string message, FrameBallDetails frameBallDetails)

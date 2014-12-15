@@ -88,7 +88,11 @@ namespace SnookerCalculatorLibTests
 
         // Add further tests:
         // - a test where can only draw with snookers
-        // - a test where can't win because only the black ball is left and can't have snookers with just one ball
+        // - a test where can't have snookers because only the black is left
+        // - invalid scores e.g. < 0 or > some sensible limit e.g. 200
+        // - invalid number of reds remaining e.g. < 1 or > 15
+        // - invalid lowest available colour e.g. < 2 or > 7
+        // - illogical lowest available colour e.g. != 2 when number of reds remaining is > 0
         // - etc
     }
 }
