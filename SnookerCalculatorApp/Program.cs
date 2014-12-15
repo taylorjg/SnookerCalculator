@@ -49,7 +49,9 @@ namespace SnookerCalculatorApp
             var player1Score = IntFromArgsOrInput(args, 0, "Player 1's score: ");
             var player2Score = IntFromArgsOrInput(args, 1, "Player 2's score: ");
             var numRedsRemaining = IntFromArgsOrInput(args, 2, "Number of remaining reds: ");
-            var lowestAvailableColour = IntFromArgsOrInputWithDefaultValue(args, 3, "Lowest available colour [Yellow]: ", null);
+            var lowestAvailableColour = (numRedsRemaining == 0)
+                                            ? IntFromArgsOrInputWithDefaultValue(args, 3, "Lowest available colour [Yellow]: ", null)
+                                            : null;
 
             return new CommandLineArgs(player1Score, player2Score, numRedsRemaining, lowestAvailableColour);
         }
