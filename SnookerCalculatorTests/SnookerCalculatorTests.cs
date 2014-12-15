@@ -18,6 +18,9 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(80));
             Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(64));
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(51));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(4));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.CanOnlyDraw, Is.False);
         }
 
         [Test]
@@ -32,6 +35,9 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(80));
             Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(64));
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(51));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(4));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.CanOnlyDraw, Is.False);
         }
 
         [Test]
@@ -46,6 +52,9 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(80));
             Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(48));
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(35));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(4));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.CanOnlyDraw, Is.False);
         }
 
         [Test]
@@ -61,6 +70,7 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(61));
             Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(16));
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(7));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails, Is.Null);
         }
 
         [Test]
@@ -75,6 +85,9 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetails.Score, Is.EqualTo(120));
             Assert.That(actual.FrameBallDetails.PointsAhead, Is.EqualTo(120));
             Assert.That(actual.FrameBallDetails.PointsRemaining, Is.EqualTo(27));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(24));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
+            Assert.That(actual.FrameBallDetails.SnookersRequiredDetails.CanOnlyDraw, Is.False);
         }
     }
 }

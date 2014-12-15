@@ -22,8 +22,7 @@ namespace SnookerCalculatorLib
                     initialLosingScore,
                     initialWinningScore,
                     currentRemainingBalls,
-                    frameBalls,
-                    lowestAvailableColour);
+                    frameBalls);
 
                 if (frameBallDetails != null)
                 {
@@ -33,6 +32,8 @@ namespace SnookerCalculatorLib
                 currentRemainingBalls.RemoveAt(0);
                 frameBalls.Add(remainingBall);
             }
+
+            frameBallDetails = AddSnookersRequired(frameBallDetails, lowestAvailableColour, currentRemainingBalls.Count);
 
             if (player1Score == player2Score) return AnalysisResult.Draw(frameBallDetails);
 
@@ -45,8 +46,7 @@ namespace SnookerCalculatorLib
             int initialLosingScore,
             int initialWinningScore,
             IEnumerable<int> remainingBalls,
-            IList<int> frameBalls,
-            int lowestAvailableColour)
+            IList<int> frameBalls)
         {
             var remainingBallsSum = remainingBalls.Sum();
             var frameBallsSum = frameBalls.Sum();
@@ -59,31 +59,67 @@ namespace SnookerCalculatorLib
                 return null;
             }
 
-            var pointsDifference = latestWinningScore - bestPossibleLosingScore;
-            var valueOfSnookersNeeded = Math.Max(4, lowestAvailableColour);
-            var numberOfSnookersNeeded = (pointsDifference - 1) / valueOfSnookersNeeded + 1;
-            var canOnlyDraw = (numberOfSnookersNeeded * valueOfSnookersNeeded == pointsDifference);
-
-            var snookersRequiredDetails = new SnookersRequiredDetails(numberOfSnookersNeeded, valueOfSnookersNeeded, canOnlyDraw);
-
             return new FrameBallDetails(
                 frameBalls,
                 latestWinningScore,
                 pointsAhead,
-                remainingBallsSum,
+                remainingBallsSum);
+        }
+
+        private static FrameBallDetails AddSnookersRequired(
+            FrameBallDetails frameBallDetails,
+            int lowestAvailableColour,
+            int numRemainingBalls)
+        {
+            if (numRemainingBalls == 1)
+            {
+                return frameBallDetails;
+            }
+
+            var pointsDifference = frameBallDetails.PointsAhead - frameBallDetails.PointsRemaining;
+            var valueOfSnookersNeeded = Math.Max(Ball.Brown.ToInt(), lowestAvailableColour);
+            var numberOfSnookersNeeded = ((pointsDifference - 1) / valueOfSnookersNeeded) + 1;
+            var canOnlyDraw = (numberOfSnookersNeeded * valueOfSnookersNeeded == pointsDifference);
+
+            var snookersRequiredDetails = new SnookersRequiredDetails(
+                numberOfSnookersNeeded,
+                valueOfSnookersNeeded,
+                canOnlyDraw);
+
+            return new FrameBallDetails(
+                frameBallDetails.FrameBalls,
+                frameBallDetails.Score,
+                frameBallDetails.PointsAhead,
+                frameBallDetails.PointsRemaining,
                 snookersRequiredDetails);
         }
+
+        private static readonly int[] RedAndBlack = new[]
+            {
+                Ball.Red.ToInt(),
+                Ball.Black.ToInt()
+            };
+
+        private static readonly int[] Colours = new[]
+            {
+                Ball.Yellow.ToInt(),
+                Ball.Green.ToInt(),
+                Ball.Brown.ToInt(),
+                Ball.Blue.ToInt(),
+                Ball.Pink.ToInt(),
+                Ball.Black.ToInt()
+            };
 
         private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestAvailableColour)
         {
             var result = new List<int>();
-            for (var i = 0; i < numRedsRemaining; i++) result.AddRange(new[] {1, 7});
+            for (var i = 0; i < numRedsRemaining; i++) result.AddRange(RedAndBlack);
             return result.Concat(RemainingColours(lowestAvailableColour));
         }
 
         private static IEnumerable<int> RemainingColours(int lowestAvailableColour)
         {
-            return new[] { 2, 3, 4, 5, 6, 7 }.Where(b => b >= lowestAvailableColour);
+            return Colours.Where(b => b >= lowestAvailableColour);
         }
     }
 }
