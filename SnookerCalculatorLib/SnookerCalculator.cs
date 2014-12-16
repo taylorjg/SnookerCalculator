@@ -6,15 +6,17 @@ namespace SnookerCalculatorLib
 {
     public class SnookerCalculator
     {
-        public static AnalysisResult Analyse(int player1Score, int player2Score, int numRedsRemaining, int lowestAvailableColour = Balls.Yellow)
+        public static AnalysisResult Analyse(
+            int player1Score,
+            int player2Score,
+            int numRedsRemaining,
+            int lowestAvailableColour = Balls.Yellow)
         {
-            var initialLosingScore = Math.Min(player1Score, player2Score);
-            var initialWinningScore = Math.Max(player1Score, player2Score);
-
-            var initialRemainingBalls = RemainingBalls(numRedsRemaining, lowestAvailableColour).ToList();
-
-            var pointsAhead = initialWinningScore - initialLosingScore;
-            var pointsRemaining = initialRemainingBalls.Sum();
+            var losingScore = Math.Min(player1Score, player2Score);
+            var winningScore = Math.Max(player1Score, player2Score);
+            var remainingBalls = RemainingBalls(numRedsRemaining, lowestAvailableColour).ToList();
+            var pointsAhead = winningScore - losingScore;
+            var pointsRemaining = remainingBalls.Sum();
 
             if (pointsAhead > pointsRemaining)
             {
@@ -23,28 +25,15 @@ namespace SnookerCalculatorLib
                     pointsAhead,
                     pointsRemaining,
                     lowestAvailableColour,
-                    initialLosingScore);
+                    losingScore);
             }
 
-            var frameBallDetailsForWinningPlayer = CalculateFrameBallDetails(
-                CalculateFrameBallDetailsForWinningPlayer,
-                initialLosingScore,
-                initialWinningScore,
-                initialRemainingBalls,
+            return CreateFrameBallDetails(
+                player1Score - player2Score,
+                losingScore,
+                winningScore,
+                remainingBalls,
                 lowestAvailableColour);
-
-            var frameBallDetailsForLosingPlayer = CalculateFrameBallDetails(
-                CalculateFrameBallDetailsForLosingPlayer,
-                initialLosingScore,
-                initialWinningScore,
-                initialRemainingBalls,
-                lowestAvailableColour);
-
-            if (player1Score == player2Score) return AnalysisResult.Draw(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer);
-
-            return player1Score > player2Score
-                       ? AnalysisResult.Player1Winning(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer)
-                       : AnalysisResult.Player2Winning(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer);
         }
 
         private static AnalysisResult CreateSnookersRequiredDetails(
@@ -96,6 +85,34 @@ namespace SnookerCalculatorLib
             }
 
             return frameBallDetails;
+        }
+
+        private static AnalysisResult CreateFrameBallDetails(
+            int scoreComparison,
+            int losingScore,
+            int winningScore,
+            IList<int> remainingBalls,
+            int lowestAvailableColour)
+        {
+            var frameBallDetailsForWinningPlayer = CalculateFrameBallDetails(
+                CalculateFrameBallDetailsForWinningPlayer,
+                losingScore,
+                winningScore,
+                remainingBalls,
+                lowestAvailableColour);
+
+            var frameBallDetailsForLosingPlayer = CalculateFrameBallDetails(
+                CalculateFrameBallDetailsForLosingPlayer,
+                losingScore,
+                winningScore,
+                remainingBalls,
+                lowestAvailableColour);
+
+            if (scoreComparison == 0) return AnalysisResult.Draw(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer);
+
+            return (scoreComparison > 0)
+                       ? AnalysisResult.Player1Winning(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer)
+                       : AnalysisResult.Player2Winning(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer);
         }
 
         private static FrameBallDetails CalculateFrameBallDetailsForWinningPlayer(

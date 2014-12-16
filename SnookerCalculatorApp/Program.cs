@@ -23,17 +23,17 @@ namespace SnookerCalculatorApp
             switch (result.AnalysisResultType)
             {
                 case AnalysisResultType.Player1Winning:
-                    PrintFrameBallDetails("Player1 is winning and can reach frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
-                    PrintFrameBallDetails("Player2 is losing but can reach frame ball as follows:", result.FrameBallDetailsForLosingPlayer);
+                    PrintFrameBallDetails("Player1 is winning and can achieve frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
+                    PrintFrameBallDetails("Player2 is losing but can achieve frame ball as follows:", result.FrameBallDetailsForLosingPlayer);
                     break;
 
                 case AnalysisResultType.Player2Winning:
-                    PrintFrameBallDetails("Player2 is winning and can reach frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
-                    PrintFrameBallDetails("Player1 is losing but can reach frame ball as follows:", result.FrameBallDetailsForLosingPlayer);
+                    PrintFrameBallDetails("Player2 is winning and can achieve frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
+                    PrintFrameBallDetails("Player1 is losing but can achieve frame ball as follows:", result.FrameBallDetailsForLosingPlayer);
                     break;
 
                 case AnalysisResultType.Draw:
-                    PrintFrameBallDetails("Players are currently tied. Either player can reach frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
+                    PrintFrameBallDetails("Players are currently tied. Either player can achieve frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
                     break;
 
                 case AnalysisResultType.Player1NeedsSnookers:
@@ -93,10 +93,10 @@ namespace SnookerCalculatorApp
         {
             Console.WriteLine();
             Console.WriteLine(message);
-            Console.WriteLine("Pot the following balls: {0}", string.Join(", ", frameBallDetails.FrameBalls.Select(Balls.ToBallName)));
-            Console.WriteLine("The winner's score will then be: {0}", frameBallDetails.Score);
-            Console.WriteLine("The winner will then be ahead by: {0}", frameBallDetails.PointsAhead);
-            Console.WriteLine("The number of points available will be: {0}", frameBallDetails.PointsRemaining);
+            Console.WriteLine("Pot these balls: {0}", string.Join(", ", frameBallDetails.FrameBalls.Select(Balls.ToBallName)));
+            Console.WriteLine("The winner's score will then be {0} points", frameBallDetails.Score);
+            Console.WriteLine("The winner will then be ahead by {0} points", frameBallDetails.PointsAhead);
+            Console.WriteLine("The number of points remaining will be {0}", frameBallDetails.PointsRemaining);
 
             if (frameBallDetails.SnookersRequiredDetails != null)
             {
