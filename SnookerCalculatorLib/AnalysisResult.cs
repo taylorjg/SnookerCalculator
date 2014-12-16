@@ -4,37 +4,39 @@
     {
         private AnalysisResult(
             AnalysisResultType analysisResultType,
-            FrameBallDetails frameBallDetails,
+            FrameBallDetails frameBallDetailsForWinningPlayer,
+            FrameBallDetails frameBallDetailsForLosingPlayer,
             SnookersRequiredDetails snookersRequiredDetails)
         {
             _analysisResultType = analysisResultType;
-            _frameBallDetails = frameBallDetails;
+            _frameBallDetailsForWinningPlayer = frameBallDetailsForWinningPlayer;
+            _frameBallDetailsForLosingPlayer = frameBallDetailsForLosingPlayer;
             _snookersRequiredDetails = snookersRequiredDetails;
         }
 
-        public static AnalysisResult Player1Winning(FrameBallDetails frameBallDetails)
+        public static AnalysisResult Player1Winning(FrameBallDetails frameBallDetails, FrameBallDetails frameBallDetails2)
         {
-            return new AnalysisResult(AnalysisResultType.Player1Winning, frameBallDetails, null);
+            return new AnalysisResult(AnalysisResultType.Player1Winning, frameBallDetails, frameBallDetails2, null);
         }
 
-        public static AnalysisResult Player2Winning(FrameBallDetails frameBallDetails)
+        public static AnalysisResult Player2Winning(FrameBallDetails frameBallDetails, FrameBallDetails frameBallDetails2)
         {
-            return new AnalysisResult(AnalysisResultType.Player2Winning, frameBallDetails, null);
+            return new AnalysisResult(AnalysisResultType.Player2Winning, frameBallDetails, frameBallDetails2, null);
         }
 
-        public static AnalysisResult Draw(FrameBallDetails frameBallDetails)
+        public static AnalysisResult Draw(FrameBallDetails frameBallDetails, FrameBallDetails frameBallDetails2)
         {
-            return new AnalysisResult(AnalysisResultType.Draw, frameBallDetails, null);
+            return new AnalysisResult(AnalysisResultType.Draw, frameBallDetails, frameBallDetails2, null);
         }
 
         public static AnalysisResult Player1NeedsSnookers(SnookersRequiredDetails snookersRequiredDetails)
         {
-            return new AnalysisResult(AnalysisResultType.Player1NeedsSnookers, null, snookersRequiredDetails);
+            return new AnalysisResult(AnalysisResultType.Player1NeedsSnookers, null, null, snookersRequiredDetails);
         }
 
         public static AnalysisResult Player2NeedsSnookers(SnookersRequiredDetails snookersRequiredDetails)
         {
-            return new AnalysisResult(AnalysisResultType.Player2NeedsSnookers, null, snookersRequiredDetails);
+            return new AnalysisResult(AnalysisResultType.Player2NeedsSnookers, null, null, snookersRequiredDetails);
         }
 
         public AnalysisResultType AnalysisResultType
@@ -42,9 +44,14 @@
             get { return _analysisResultType; }
         }
 
-        public FrameBallDetails FrameBallDetails
+        public FrameBallDetails FrameBallDetailsForWinningPlayer
         {
-            get { return _frameBallDetails; }
+            get { return _frameBallDetailsForWinningPlayer; }
+        }
+
+        public FrameBallDetails FrameBallDetailsForLosingPlayer
+        {
+            get { return _frameBallDetailsForLosingPlayer; }
         }
 
         public SnookersRequiredDetails SnookersRequiredDetails
@@ -53,7 +60,8 @@
         }
 
         private readonly AnalysisResultType _analysisResultType;
-        private readonly FrameBallDetails _frameBallDetails;
+        private readonly FrameBallDetails _frameBallDetailsForWinningPlayer;
+        private readonly FrameBallDetails _frameBallDetailsForLosingPlayer;
         private readonly SnookersRequiredDetails _snookersRequiredDetails;
     }
 }

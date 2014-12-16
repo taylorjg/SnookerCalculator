@@ -23,15 +23,17 @@ namespace SnookerCalculatorApp
             switch (result.AnalysisResultType)
             {
                 case AnalysisResultType.Player1Winning:
-                    PrintFrameBallDetails("Player1 is winning and can reach frame ball as follows:", result.FrameBallDetails);
+                    PrintFrameBallDetails("Player1 is winning and can reach frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
+                    PrintFrameBallDetails("Player2 is losing but can reach frame ball as follows:", result.FrameBallDetailsForLosingPlayer);
                     break;
 
                 case AnalysisResultType.Player2Winning:
-                    PrintFrameBallDetails("Player2 is winning and can reach frame ball as follows:", result.FrameBallDetails);
+                    PrintFrameBallDetails("Player2 is winning and can reach frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
+                    PrintFrameBallDetails("Player1 is losing but can reach frame ball as follows:", result.FrameBallDetailsForLosingPlayer);
                     break;
 
                 case AnalysisResultType.Draw:
-                    PrintFrameBallDetails("Players are currently tied. Either player can reach frame ball as follows:", result.FrameBallDetails);
+                    PrintFrameBallDetails("Players are currently tied. Either player can reach frame ball as follows:", result.FrameBallDetailsForWinningPlayer);
                     break;
 
                 case AnalysisResultType.Player1NeedsSnookers:
@@ -89,6 +91,7 @@ namespace SnookerCalculatorApp
 
         private static void PrintFrameBallDetails(string message, FrameBallDetails frameBallDetails)
         {
+            Console.WriteLine();
             Console.WriteLine(message);
             Console.WriteLine("Pot the following balls: {0}", string.Join(", ", frameBallDetails.FrameBalls.Select(Balls.ToBallName)));
             Console.WriteLine("The winner's score will then be: {0}", frameBallDetails.Score);
@@ -97,7 +100,12 @@ namespace SnookerCalculatorApp
 
             if (frameBallDetails.SnookersRequiredDetails != null)
             {
-                PrintSnookersRequiredDetails("The other player will then require snookers", frameBallDetails.SnookersRequiredDetails);
+                PrintSnookersRequiredDetails("The other player will then require snookers",
+                                             frameBallDetails.SnookersRequiredDetails);
+            }
+            else
+            {
+                Console.WriteLine("The other player will then not be able to win");
             }
         }
 
