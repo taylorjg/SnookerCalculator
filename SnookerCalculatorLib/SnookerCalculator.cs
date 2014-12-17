@@ -54,6 +54,40 @@ namespace SnookerCalculatorLib
                 : AnalysisResult.Player2NeedsSnookers(snookersRequiredDetails);
         }
 
+        private static AnalysisResult CreateFrameBallDetails(
+            int scoreComparison,
+            int losingScore,
+            int winningScore,
+            IList<int> remainingBalls,
+            int lowestAvailableColour)
+        {
+            var frameBallDetailsForWinningPlayer = CalculateFrameBallDetails(
+                CalculateFrameBallDetailsForWinningPlayer,
+                losingScore,
+                winningScore,
+                remainingBalls,
+                lowestAvailableColour);
+
+            var frameBallDetailsForLosingPlayer = CalculateFrameBallDetails(
+                CalculateFrameBallDetailsForLosingPlayer,
+                losingScore,
+                winningScore,
+                remainingBalls,
+                lowestAvailableColour);
+
+            if (scoreComparison == 0) return AnalysisResult.Draw(
+                frameBallDetailsForWinningPlayer,
+                frameBallDetailsForLosingPlayer);
+
+            return (scoreComparison > 0)
+                       ? AnalysisResult.Player1Winning(
+                           frameBallDetailsForWinningPlayer,
+                           frameBallDetailsForLosingPlayer)
+                       : AnalysisResult.Player2Winning(
+                           frameBallDetailsForWinningPlayer,
+                           frameBallDetailsForLosingPlayer);
+        }
+
         private static FrameBallDetails CalculateFrameBallDetails(
             Func<int, int, IEnumerable<int>, IList<int>, FrameBallDetails> calculateFrameBallDetailsHelper,
             int losingScore,
@@ -81,38 +115,13 @@ namespace SnookerCalculatorLib
             
             if (frameBallDetails != null)
             {
-                frameBallDetails = AddSnookersRequired(frameBallDetails, lowestAvailableColour, currentRemainingBalls.Count);
+                frameBallDetails = AddSnookersRequired(
+                    frameBallDetails,
+                    lowestAvailableColour,
+                    currentRemainingBalls.Count);
             }
 
             return frameBallDetails;
-        }
-
-        private static AnalysisResult CreateFrameBallDetails(
-            int scoreComparison,
-            int losingScore,
-            int winningScore,
-            IList<int> remainingBalls,
-            int lowestAvailableColour)
-        {
-            var frameBallDetailsForWinningPlayer = CalculateFrameBallDetails(
-                CalculateFrameBallDetailsForWinningPlayer,
-                losingScore,
-                winningScore,
-                remainingBalls,
-                lowestAvailableColour);
-
-            var frameBallDetailsForLosingPlayer = CalculateFrameBallDetails(
-                CalculateFrameBallDetailsForLosingPlayer,
-                losingScore,
-                winningScore,
-                remainingBalls,
-                lowestAvailableColour);
-
-            if (scoreComparison == 0) return AnalysisResult.Draw(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer);
-
-            return (scoreComparison > 0)
-                       ? AnalysisResult.Player1Winning(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer)
-                       : AnalysisResult.Player2Winning(frameBallDetailsForWinningPlayer, frameBallDetailsForLosingPlayer);
         }
 
         private static FrameBallDetails CalculateFrameBallDetailsForWinningPlayer(
