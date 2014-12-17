@@ -132,10 +132,10 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetailsForWinningPlayer.FrameBalls, Is.EqualTo(new[] { 1, 7, 1 }));
             Assert.That(actual.FrameBallDetailsForWinningPlayer.Score, Is.EqualTo(68));
             Assert.That(actual.FrameBallDetailsForWinningPlayer.PointsAhead, Is.EqualTo(68));
-            Assert.That(actual.FrameBallDetailsForWinningPlayer.PointsRemaining, Is.EqualTo(66));
-            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(1));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.PointsRemaining, Is.EqualTo(59));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(3));
             Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
-            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.ToWinBy, Is.EqualTo(2));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.ToWinBy, Is.EqualTo(3));
 
             Assert.That(actual.FrameBallDetailsForLosingPlayer.FrameBalls, Is.EqualTo(new[] { 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 2, 3, 4, 5, 6 }));
             Assert.That(actual.FrameBallDetailsForLosingPlayer.Score, Is.EqualTo(68));
@@ -159,10 +159,10 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.FrameBallDetailsForWinningPlayer.FrameBalls, Is.EqualTo(new[] { 1, 7, 1 }));
             Assert.That(actual.FrameBallDetailsForWinningPlayer.Score, Is.EqualTo(68));
             Assert.That(actual.FrameBallDetailsForWinningPlayer.PointsAhead, Is.EqualTo(68));
-            Assert.That(actual.FrameBallDetailsForWinningPlayer.PointsRemaining, Is.EqualTo(66));
-            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(1));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.PointsRemaining, Is.EqualTo(59));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(3));
             Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(4));
-            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.ToWinBy, Is.EqualTo(2));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.ToWinBy, Is.EqualTo(3));
 
             Assert.That(actual.FrameBallDetailsForLosingPlayer.FrameBalls, Is.EqualTo(new[] { 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 2, 3, 4, 5, 6 }));
             Assert.That(actual.FrameBallDetailsForLosingPlayer.Score, Is.EqualTo(68));

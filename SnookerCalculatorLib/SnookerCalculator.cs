@@ -89,7 +89,7 @@ namespace SnookerCalculatorLib
         }
 
         private static FrameBallDetails CalculateFrameBallDetails(
-            Func<int, int, IEnumerable<int>, IList<int>, FrameBallDetails> calculateFrameBallDetailsHelper,
+            Func<int, int, IList<int>, IList<int>, FrameBallDetails> calculateFrameBallDetailsHelper,
             int losingScore,
             int winningScore,
             IList<int> initialRemainingBalls,
@@ -127,7 +127,7 @@ namespace SnookerCalculatorLib
         private static FrameBallDetails CalculateFrameBallDetailsForWinningPlayer(
             int initialLosingScore,
             int initialWinningScore,
-            IEnumerable<int> remainingBalls,
+            IList<int> remainingBalls,
             IList<int> frameBalls)
         {
             var remainingBallsSum = remainingBalls.Sum();
@@ -142,13 +142,13 @@ namespace SnookerCalculatorLib
                 frameBalls,
                 latestWinningScore,
                 pointsAhead,
-                remainingBallsSum);
+                SanitisedRemainingBallsSum(remainingBalls));
         }
 
         private static FrameBallDetails CalculateFrameBallDetailsForLosingPlayer(
             int initialLosingScore,
             int initialWinningScore,
-            IEnumerable<int> remainingBalls,
+            IList<int> remainingBalls,
             IList<int> frameBalls)
         {
             var remainingBallsSum = remainingBalls.Sum();
@@ -163,7 +163,13 @@ namespace SnookerCalculatorLib
                 frameBalls,
                 latestLosingScore,
                 pointsAhead,
-                remainingBallsSum);
+                SanitisedRemainingBallsSum(remainingBalls));
+        }
+
+        private static int SanitisedRemainingBallsSum(ICollection<int> remainingBalls)
+        {
+            var skipCount = (remainingBalls.Count > Colours.Count() && remainingBalls.First() != Balls.Red) ? 1 : 0;
+            return remainingBalls.Skip(skipCount).Sum();
         }
 
         private static FrameBallDetails AddSnookersRequired(
