@@ -206,12 +206,10 @@ namespace SnookerCalculatorLib
             var numberOfSnookersNeeded = ((pointsDifference - 1) / valueOfSnookersNeeded) + 1;
             var toWinBy = numberOfSnookersNeeded * valueOfSnookersNeeded - pointsDifference;
 
-            var snookersRequiredDetails = new SnookersRequiredDetails(
+            return new SnookersRequiredDetails(
                 numberOfSnookersNeeded,
                 valueOfSnookersNeeded,
                 toWinBy);
-
-            return snookersRequiredDetails;
         }
 
         private static readonly int[] RedAndBlack = new[]
@@ -232,9 +230,7 @@ namespace SnookerCalculatorLib
 
         private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestAvailableColour)
         {
-            var result = new List<int>();
-            for (var i = 0; i < numRedsRemaining; i++) result.AddRange(RedAndBlack);
-            return result.Concat(RemainingColours(lowestAvailableColour));
+            return RedAndBlack.Repeat(numRedsRemaining).Concat(RemainingColours(lowestAvailableColour));
         }
 
         private static IEnumerable<int> RemainingColours(int lowestAvailableColour)
