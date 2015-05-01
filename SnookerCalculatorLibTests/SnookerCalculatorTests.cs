@@ -203,6 +203,34 @@ namespace SnookerCalculatorLibTests
             Assert.That(actual.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(5));
         }
 
+        [Test, Description("This test currently fails due to a bug in the implementation")]
+        public void Player2WinningAndNeedsGreenBrownBlueToLeaveOtherPlayerNeedingTwoPinkSnookers()
+        {
+            const int player1Score = 43;
+            const int player2Score = 51;
+            const int numRedsRemaining = 0;
+            const int lowestAvailableColour = 3;
+            var actual = SnookerCalculator.Analyse(player1Score, player2Score, numRedsRemaining, lowestAvailableColour);
+
+            Assert.That(actual.AnalysisResultType, Is.EqualTo(AnalysisResultType.Player2Winning));
+
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.FrameBalls, Is.EqualTo(new[] { 3, 4, 5 }));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.Score, Is.EqualTo(63));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.PointsAhead, Is.EqualTo(20));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.PointsRemaining, Is.EqualTo(13));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.NumberOfSnookersNeeded, Is.EqualTo(2));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.ValueOfSnookersNeeded, Is.EqualTo(6));
+            Assert.That(actual.FrameBallDetailsForWinningPlayer.SnookersRequiredDetails.ToWinBy, Is.EqualTo(5));
+
+            Assert.That(actual.FrameBallDetailsForLosingPlayer.FrameBalls, Is.EqualTo(new[] {3, 4, 5, 6}));
+            Assert.That(actual.FrameBallDetailsForLosingPlayer.Score, Is.EqualTo(61));
+            Assert.That(actual.FrameBallDetailsForLosingPlayer.PointsAhead, Is.EqualTo(10));
+            Assert.That(actual.FrameBallDetailsForLosingPlayer.PointsRemaining, Is.EqualTo(7));
+            Assert.That(actual.FrameBallDetailsForLosingPlayer.SnookersRequiredDetails, Is.Null);
+
+            Assert.That(actual.SnookersRequiredDetails, Is.Null);
+        }
+
         // Add further tests:
         // - a test where can only draw with snookers
         // - a test where can't have snookers because only the black is left

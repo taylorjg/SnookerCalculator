@@ -21,59 +21,52 @@ namespace SnookerCalculatorLib
             if (pointsAhead > pointsRemaining)
             {
                 return CreateSnookersRequiredDetails(
-                    player2Score > player1Score,
+                    player1Score - player2Score,
                     pointsAhead,
                     pointsRemaining,
-                    lowestAvailableColour,
-                    losingScore);
+                    lowestAvailableColour);
             }
 
             return CreateFrameBallDetails(
                 player1Score - player2Score,
                 losingScore,
                 winningScore,
-                remainingBalls,
-                lowestAvailableColour);
+                remainingBalls);
         }
 
         private static AnalysisResult CreateSnookersRequiredDetails(
-            bool player1NeedsSnookers,
+            int scoreComparison,
             int pointsAhead,
             int pointsRemaining,
-            int lowestAvailableColour,
-            int numRemainingBalls)
+            int lowestAvailableColour)
         {
             var snookersRequiredDetails = CalculateSnookersRequired(
                 pointsAhead,
                 pointsRemaining,
-                lowestAvailableColour,
-                numRemainingBalls);
+                lowestAvailableColour);
 
-            return (player1NeedsSnookers)
-                ? AnalysisResult.Player1NeedsSnookers(snookersRequiredDetails)
-                : AnalysisResult.Player2NeedsSnookers(snookersRequiredDetails);
+            return (scoreComparison > 0)
+                ? AnalysisResult.Player2NeedsSnookers(snookersRequiredDetails)
+                : AnalysisResult.Player1NeedsSnookers(snookersRequiredDetails);
         }
 
         private static AnalysisResult CreateFrameBallDetails(
             int scoreComparison,
             int losingScore,
             int winningScore,
-            IList<int> remainingBalls,
-            int lowestAvailableColour)
+            IList<int> remainingBalls)
         {
             var frameBallDetailsForWinningPlayer = CalculateFrameBallDetails(
                 CalculateFrameBallDetailsForWinningPlayer,
                 losingScore,
                 winningScore,
-                remainingBalls,
-                lowestAvailableColour);
+                remainingBalls);
 
             var frameBallDetailsForLosingPlayer = CalculateFrameBallDetails(
                 CalculateFrameBallDetailsForLosingPlayer,
                 losingScore,
                 winningScore,
-                remainingBalls,
-                lowestAvailableColour);
+                remainingBalls);
 
             if (scoreComparison == 0) return AnalysisResult.Draw(
                 frameBallDetailsForWinningPlayer,
@@ -92,8 +85,7 @@ namespace SnookerCalculatorLib
             Func<int, int, IList<int>, IList<int>, FrameBallDetails> calculateFrameBallDetailsHelper,
             int losingScore,
             int winningScore,
-            IList<int> initialRemainingBalls,
-            int lowestAvailableColour)
+            IList<int> initialRemainingBalls)
         {
             var currentRemainingBalls = new List<int>(initialRemainingBalls);
             var frameBalls = new List<int>();
@@ -117,8 +109,7 @@ namespace SnookerCalculatorLib
             {
                 frameBallDetails = AddSnookersRequired(
                     frameBallDetails,
-                    lowestAvailableColour,
-                    currentRemainingBalls.Count);
+                    currentRemainingBalls);
             }
 
             return frameBallDetails;
@@ -174,14 +165,19 @@ namespace SnookerCalculatorLib
 
         private static FrameBallDetails AddSnookersRequired(
             FrameBallDetails frameBallDetails,
-            int lowestAvailableColour,
-            int numRemainingBalls)
+            IReadOnlyCollection<int> remainingBalls)
         {
+            if (!remainingBalls.Any()) return frameBallDetails;
+
+            var lowestAvailableColour =
+                (remainingBalls.Count < Colours.Length)
+                    ? remainingBalls.First()
+                    : Balls.Yellow;
+
             var snookersRequiredDetails = CalculateSnookersRequired(
                 frameBallDetails.PointsAhead,
                 frameBallDetails.PointsRemaining,
-                lowestAvailableColour,
-                numRemainingBalls);
+                lowestAvailableColour);
 
             return (snookersRequiredDetails != null)
                        ? new FrameBallDetails(
@@ -196,13 +192,12 @@ namespace SnookerCalculatorLib
         private static SnookersRequiredDetails CalculateSnookersRequired(
             int pointsAhead,
             int pointsRemaining,
-            int lowestAvailableColour,
-            int numRemainingBalls)
+            int lowestAvailableColour)
         {
-            if (numRemainingBalls < 2) return null;
+            if (lowestAvailableColour == Balls.Black) return null;
 
             var pointsDifference = pointsAhead - pointsRemaining;
-            var valueOfSnookersNeeded = Math.Max(Balls.Brown, lowestAvailableColour);
+            var valueOfSnookersNeeded = Math.Max(4, lowestAvailableColour);
             var numberOfSnookersNeeded = ((pointsDifference - 1) / valueOfSnookersNeeded) + 1;
             var toWinBy = numberOfSnookersNeeded * valueOfSnookersNeeded - pointsDifference;
 
@@ -212,21 +207,21 @@ namespace SnookerCalculatorLib
                 toWinBy);
         }
 
-        private static readonly int[] RedAndBlack = new[]
-            {
-                Balls.Red,
-                Balls.Black
-            };
+        private static readonly int[] RedAndBlack =
+        {
+            Balls.Red,
+            Balls.Black
+        };
 
-        private static readonly int[] Colours = new[]
-            {
-                Balls.Yellow,
-                Balls.Green,
-                Balls.Brown,
-                Balls.Blue,
-                Balls.Pink,
-                Balls.Black
-            };
+        private static readonly int[] Colours =
+        {
+            Balls.Yellow,
+            Balls.Green,
+            Balls.Brown,
+            Balls.Blue,
+            Balls.Pink,
+            Balls.Black
+        };
 
         private static IEnumerable<int> RemainingBalls(int numRedsRemaining, int lowestAvailableColour)
         {
